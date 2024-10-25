@@ -3053,6 +3053,8 @@ var
 
   cx_restart,bx_restart:extended;
 
+  alongx:extended;
+
   temp,dummy1,dummy2:extended;
 
   i,n,iii,error:integer;
@@ -3091,10 +3093,13 @@ begin
   padby:=0;
 
 
+  if (control_rail=2) or (control_rail=4) or (control_rail=25)
+     then alongx:=xorg+turnout_road_endx                        // turnout road length
+     else alongx:=turnoutx;                                     // main road length
 
-  inc_cx:=MIN(g,turnoutx/5);     // at least 5 steps along it
-  cx:=0-inc_cx*2;                // start in front of template
-  end_cx:=turnoutx+inc_cx*2;     // end beyond it
+  inc_cx:=MIN(g,alongx/5);    // at least 5 steps along it
+  cx:=0-inc_cx*2;             // start in front of template
+  end_cx:=alongx+inc_cx*2;    // end beyond it
 
   cx_restart:=cx;
 
@@ -3113,7 +3118,6 @@ begin
     end_bx:=turnoutx+inc_bx*3;     // end well beyond it
 
     bx_restart:=bx;
-
 
     for n:=0 to 12 do begin      //  step reductions      12 arbitrary, should break before
 
@@ -3269,8 +3273,8 @@ begin
                                                    +#13+'In other words, the desired intersection position must be visible on the overlaid templates.'
                                                    +#13+'You may need to lengthen one or both templates.'
                                                    +#13+#13+'Check also that you have specified the correct rails.'
-                                                   +#13+#13+'If the radius is being adjusted, check that the fixing peg is in a suitable position'
-                                                   +#13+'to permit the target intersection angle.')
+                                                   +#13+#13+'If the control template is being adjusted, check that the fixing peg is in a suitable position'
+                                                   +' to permit the target intersection angle.')
 
                            else show_modal_message('The find intersection function was cancelled.');
                       end;
